@@ -64,7 +64,7 @@ final class ListProductsAction
             ['slug' => $request->get('slug')]
         );
 
-        if ($form->isSubmitted() && !$form->isValid()) {
+        if (!$form->isValid()) {
             $requestData = $this->clearInvalidEntries($form, $requestData);
         }
 
