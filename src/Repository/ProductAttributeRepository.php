@@ -25,10 +25,11 @@ class ProductAttributeRepository implements ProductAttributeRepositoryInterface
 
     public function getAttributeTypeByName(string $attributeName): string
     {
-        /** @var QueryBuilder $queryBuilder */
-        $queryBuilder = $this->productAttributeRepository->createQueryBuilder('p');
+        /** @var EntityRepository $queryBuilder */
+        $queryBuilder = $this->productAttributeRepository;
 
         $result = $queryBuilder
+            ->createQueryBuilder('o')
             ->select('p.type')
             ->where('p.code = :code')
             ->setParameter(':code', $attributeName)
@@ -47,6 +48,7 @@ class ProductAttributeRepository implements ProductAttributeRepositoryInterface
             $queryBuilder
                 ->createQueryBuilder('o')
                 ->addSelect('translation')
+                /** @phpstan-ignore-next-line */
                 ->leftJoin('o.translations', 'translation', 'ot')
                 ->andWhere('translation.locale = :locale')
                 ->setParameter('locale', $locale)

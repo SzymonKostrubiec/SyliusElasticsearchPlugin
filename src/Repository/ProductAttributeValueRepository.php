@@ -26,6 +26,7 @@ class ProductAttributeValueRepository implements ProductAttributeValueRepository
 
     public function getUniqueAttributeValues(AttributeInterface $productAttribute, Taxon $taxon): array
     {
+        /** @phpstan-ignore-next-line */
         $queryBuilder = $this->baseAttributeValueRepository->createQueryBuilder('o');
 
         /** @var string|null $storageType */

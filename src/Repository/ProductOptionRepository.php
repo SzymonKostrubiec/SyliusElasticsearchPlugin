@@ -32,6 +32,7 @@ class ProductOptionRepository implements ProductOptionRepositoryInterface
             $queryBuilder
                 ->createQueryBuilder('o')
                 ->addSelect('translation')
+                /** @phpstan-ignore-next-line */
                 ->leftJoin('o.translations', 'translation', 'ot')
                 ->andWhere('translation.locale = :locale')
                 ->setParameter('locale', $locale)
