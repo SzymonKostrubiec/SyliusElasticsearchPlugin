@@ -34,7 +34,6 @@ final class TaxonFacetsQueryBuilder implements TaxonFacetsQueryBuilderInterface
 
         $data = $this->shopProductListDataHandler->retrieveData($eventData);
 
-        /** @var Query\BoolQuery $boolQuery */
         $boolQuery = $this->searchProductsQueryBuilder->buildQuery($data);
 
         foreach ($data['facets'] ?? [] as $facetId => $selectedBuckets) {
