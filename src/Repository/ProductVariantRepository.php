@@ -26,8 +26,10 @@ class ProductVariantRepository implements ProductVariantRepositoryInterface
 
     public function findOneByOptionValue(ProductOptionValueInterface $productOptionValue): ?ProductVariantInterface
     {
-        /** @phpstan-ignore-next-line */
-        return $this->baseProductVariantRepository->createQueryBuilder('o')
+        /** @var EntityRepository $baseProductVariantRepository */
+        $baseProductVariantRepository = $this->baseProductVariantRepository;
+        return $baseProductVariantRepository
+            ->createQueryBuilder('o')
             ->where(':optionValue MEMBER OF o.optionValues')
             ->setParameter('optionValue', $productOptionValue)
             ->getQuery()
@@ -38,8 +40,10 @@ class ProductVariantRepository implements ProductVariantRepositoryInterface
 
     public function findByOptionValue(ProductOptionValueInterface $productOptionValue): array
     {
-        /** @phpstan-ignore-next-line */
-        return $this->baseProductVariantRepository->createQueryBuilder('o')
+        /** @var EntityRepository $baseProductVariantRepository */
+        $baseProductVariantRepository = $this->baseProductVariantRepository;
+        return $baseProductVariantRepository
+            ->createQueryBuilder('o')
             ->where(':optionValue MEMBER OF o.optionValues')
             ->setParameter('optionValue', $productOptionValue)
             ->getQuery()

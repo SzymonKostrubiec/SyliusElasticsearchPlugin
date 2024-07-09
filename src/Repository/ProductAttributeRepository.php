@@ -12,6 +12,7 @@ declare(strict_types=1);
 
 namespace BitBag\SyliusElasticsearchPlugin\Repository;
 
+use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\QueryBuilder;
 use Sylius\Component\Resource\Repository\RepositoryInterface;
 
@@ -39,11 +40,12 @@ class ProductAttributeRepository implements ProductAttributeRepositoryInterface
 
     public function findAllWithTranslations(?string $locale): array
     {
-        /** @var QueryBuilder $queryBuilder */
-        $queryBuilder = $this->productAttributeRepository->createQueryBuilder('o');
+        /** @var EntityRepository $queryBuilder */
+        $queryBuilder = $this->productAttributeRepository;
 
         if (null !== $locale) {
             $queryBuilder
+                ->createQueryBuilder('o')
                 ->addSelect('translation')
                 ->leftJoin('o.translations', 'translation', 'ot')
                 ->andWhere('translation.locale = :locale')
@@ -52,6 +54,7 @@ class ProductAttributeRepository implements ProductAttributeRepositoryInterface
         }
 
         return $queryBuilder
+            ->createQueryBuilder('o')
             ->getQuery()
             ->getResult()
         ;

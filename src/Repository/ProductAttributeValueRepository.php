@@ -12,6 +12,7 @@ declare(strict_types=1);
 
 namespace BitBag\SyliusElasticsearchPlugin\Repository;
 
+use Doctrine\ORM\EntityRepository;
 use Sylius\Component\Attribute\Model\AttributeInterface;
 use Sylius\Component\Product\Repository\ProductAttributeValueRepositoryInterface as BaseAttributeValueRepositoryInterface;
 use Sylius\Component\Taxonomy\Model\Taxon;
@@ -26,19 +27,23 @@ class ProductAttributeValueRepository implements ProductAttributeValueRepository
 
     public function getUniqueAttributeValues(AttributeInterface $productAttribute, Taxon $taxon): array
     {
-        $queryBuilder = $this->baseAttributeValueRepository->createQueryBuilder('o');
+        /** @var EntityRepository $queryBuilder */
+        $queryBuilder = $this->baseAttributeValueRepository;
 
         /** @var string|null $storageType */
         $storageType = $productAttribute->getStorageType();
 
         $queryBuilder
+            ->createQueryBuilder('o')
             ->join('o.subject', 'p', 'WITH', 'p.enabled = 1')
             ->join('p.productTaxons', 't', 'WITH', 't.product = p.id')
             ->select('o.localeCode, o.' . $storageType . ' as value')
             ->andWhere('t.taxon = :taxon');
 
         if (true === $this->includeAllDescendants) {
-            $queryBuilder->innerJoin('t.taxon', 'taxon')
+            $queryBuilder
+                ->createQueryBuilder('o')
+                ->innerJoin('t.taxon', 'taxon')
                 ->orWhere('taxon.left >= :taxonLeft and taxon.right <= :taxonRight and taxon.root = :taxonRoot')
                 ->setParameter('taxonLeft', $taxon->getLeft())
                 ->setParameter('taxonRight', $taxon->getRight())
@@ -46,6 +51,7 @@ class ProductAttributeValueRepository implements ProductAttributeValueRepository
         }
 
         return $queryBuilder
+            ->createQueryBuilder('o')
             ->andWhere('o.attribute = :attribute')
             ->groupBy('o.' . $storageType)
             ->addGroupBy('o.localeCode')
