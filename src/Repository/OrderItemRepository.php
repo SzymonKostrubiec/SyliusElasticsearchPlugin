@@ -25,11 +25,13 @@ class OrderItemRepository implements OrderItemRepositoryInterface
 
     public function countByVariant(ProductVariantInterface $variant, array $orderStates = []): int
     {
-        if (empty($orderStates)) {
+        if ([] !== $orderStates) {
             $orderStates = [OrderInterface::STATE_CANCELLED, OrderInterface::STATE_CART];
         }
+        /** @var EntityRepository $queryBuilder */
+        $queryBuilder = $this->baseOrderItemRepository;
 
-        return (int) ($this->baseOrderItemRepository
+        return (int) ($queryBuilder
             ->createQueryBuilder('oi')
             ->select('SUM(oi.quantity)')
             ->join('oi.order', 'o')
