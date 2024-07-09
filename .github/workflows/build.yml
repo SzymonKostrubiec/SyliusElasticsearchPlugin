@@ -22,7 +22,7 @@ jobs:
       matrix:
         php: [ "8.1"]
         symfony: [ "^6.0" ]
-        sylius: [ "v1.13.0" ]
+        sylius: [ "v1.13.3" ]
         node: [ "20.x" ]
         mysql: [ "8.0" ]
     env:
