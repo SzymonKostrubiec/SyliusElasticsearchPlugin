@@ -12,6 +12,7 @@ declare(strict_types=1);
 
 namespace BitBag\SyliusElasticsearchPlugin\Repository;
 
+use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\QueryBuilder;
 use Sylius\Component\Resource\Repository\RepositoryInterface;
 
@@ -24,10 +25,11 @@ class ProductAttributeRepository implements ProductAttributeRepositoryInterface
 
     public function getAttributeTypeByName(string $attributeName): string
     {
-        /** @var QueryBuilder $queryBuilder */
-        $queryBuilder = $this->productAttributeRepository->createQueryBuilder('p');
+        /** @var EntityRepository $queryBuilder */
+        $queryBuilder = $this->productAttributeRepository;
 
         $result = $queryBuilder
+            ->createQueryBuilder('p')
             ->select('p.type')
             ->where('p.code = :code')
             ->setParameter(':code', $attributeName)
