@@ -41,8 +41,10 @@ class ProductAttributeRepository implements ProductAttributeRepositoryInterface
 
     public function findAllWithTranslations(?string $locale): array
     {
-        /** @var QueryBuilder $queryBuilder */
-        $queryBuilder = $this->productAttributeRepository->createQueryBuilder('o');
+        /** @var EntityRepository $productAttributeRepository */
+        $productAttributeRepository = $this->productAttributeRepository;
+
+        $queryBuilder = $productAttributeRepository->createQueryBuilder('o');
 
         if (null !== $locale) {
             $queryBuilder
