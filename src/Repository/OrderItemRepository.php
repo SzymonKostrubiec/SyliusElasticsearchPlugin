@@ -29,10 +29,7 @@ class OrderItemRepository implements OrderItemRepositoryInterface
             $orderStates = [OrderInterface::STATE_CANCELLED, OrderInterface::STATE_CART];
         }
 
-        /** @var EntityRepository $baseOrderItemRepository */
-        $baseOrderItemRepository = $this->baseOrderItemRepository;
-
-        return (int) ($baseOrderItemRepository
+        return (int) ($this->baseOrderItemRepository
             ->createQueryBuilder('oi')
             ->select('SUM(oi.quantity)')
             ->join('oi.order', 'o')
