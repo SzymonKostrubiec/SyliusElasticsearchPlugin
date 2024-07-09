@@ -28,10 +28,8 @@ class OrderItemRepository implements OrderItemRepositoryInterface
         if ([] !== $orderStates) {
             $orderStates = [OrderInterface::STATE_CANCELLED, OrderInterface::STATE_CART];
         }
-        /** @var EntityRepository $queryBuilder */
-        $queryBuilder = $this->baseOrderItemRepository;
-
-        return (int) ($queryBuilder
+        /** @phpstan-ignore-next-line */
+        return (int) ($this->baseOrderItemRepository
             ->createQueryBuilder('oi')
             ->select('SUM(oi.quantity)')
             ->join('oi.order', 'o')
