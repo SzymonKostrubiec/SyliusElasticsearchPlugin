@@ -13,7 +13,6 @@ declare(strict_types=1);
 namespace BitBag\SyliusElasticsearchPlugin\Repository;
 
 use Doctrine\ORM\EntityRepository;
-use Doctrine\ORM\QueryBuilder;
 use Sylius\Component\Resource\Repository\RepositoryInterface;
 
 class ProductOptionRepository implements ProductOptionRepositoryInterface

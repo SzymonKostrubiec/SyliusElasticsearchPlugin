@@ -30,16 +30,20 @@ class TaxonRepository implements TaxonRepositoryInterface
 
     public function getTaxonsByAttributeViaProduct(AttributeInterface $attribute): array
     {
-        /** @phpstan-ignore-next-line */
-        return $this->baseTaxonRepository
+        /** @var EntityRepository $baseTaxonRepository */
+        $baseTaxonRepository = $this->baseTaxonRepository;
+
+        /** @var EntityRepository $productRepository */
+        $productRepository = $this->productRepository;
+
+        return $baseTaxonRepository
             ->createQueryBuilder('t')
             ->distinct(true)
             ->select('t')
             ->leftJoin($this->productTaxonEntityClass, 'pt', Join::WITH, 'pt.taxon = t.id')
             ->where(
                 'pt.product IN(' .
-                /** @phpstan-ignore-next-line */
-                $this->productRepository
+                $productRepository
                     ->createQueryBuilder('p')
                     ->leftJoin($this->productAttributeEntityClass, 'pav', Join::WITH, 'pav.subject = p.id')
                     ->where('pav.attribute = :attribute')
